@@ -35,7 +35,7 @@ namespace ytconfig_dotnet
             options.DefaultFileNames.Add("index.html");
             app.UseDefaultFiles(options);
 
-            var frontEndFilePath = @"E:\VS2019Repo\ytconfig-react-build";
+            var frontEndFilePath = Configuration["wwwroot"];
             app.UseStaticFiles(new StaticFileOptions
             {
                 FileProvider = new PhysicalFileProvider(frontEndFilePath)

@@ -1,11 +1,6 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 
 namespace ytconfig_dotnet
 {
@@ -18,9 +13,19 @@ namespace ytconfig_dotnet
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
-                .ConfigureWebHostDefaults(webBuilder =>
+            .ConfigureAppConfiguration((hostingContext, config) =>
+            {
+                config.Sources.Clear();
+                config.AddIniFile("TyIniConfig.ini", optional: true, reloadOnChange: true);
+                config.AddEnvironmentVariables();
+                if (args != null)
                 {
-                    webBuilder.UseStartup<Startup>();
-                });
+                    config.AddCommandLine(args);
+                }
+            })
+            .ConfigureWebHostDefaults(webBuilder =>
+            {
+                webBuilder.UseStartup<Startup>();
+            });
     }
 }
